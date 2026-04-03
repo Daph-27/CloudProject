@@ -68,8 +68,32 @@ const RealTimeDashboard = ({ onPredictionUpdate }) => {
     <div className="realtime-dashboard">
       <div className="dashboard-header">
         <h2>Live Appliance Telemetry</h2>
-        <div className="pulse-indicator">
-          <span className="dot"></span> Live Stream Active
+        <div className="header-actions">
+          <button 
+            className="action-btn"
+            onClick={async () => {
+              const name = prompt("Enter appliance name (e.g. Geyser):");
+              const watts = prompt("Enter power in Watts:");
+              if(name && watts) {
+                await fetch('http://127.0.0.1:5001/api/add-appliance', {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ name, watts: parseInt(watts) })
+                });
+              }
+            }}
+          >
+            ➕ Add Appliance
+          </button>
+          <button 
+            className="action-btn report-btn"
+            onClick={() => window.open('http://127.0.0.1:5001/api/generate-report')}
+          >
+            📄 Get PDF Report
+          </button>
+          <div className="pulse-indicator">
+            <span className="dot"></span> Live Stream Active
+          </div>
         </div>
       </div>
       
